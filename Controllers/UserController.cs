@@ -27,7 +27,7 @@ public class UserController : Controller
         _configuration = configuration ?? throw new ArgumentException(nameof(_configuration));
     }
 
-    [HttpPost("register")]
+    [HttpPost("Register")]
     public async Task<IActionResult> Register(UserDto userDto)
     {
         if (await _auth.Register(userDto))
@@ -37,7 +37,7 @@ public class UserController : Controller
         return Conflict(new { message = "User already exists" });
     }
 
-    [HttpPost("login")]
+    [HttpPost("Login")]
     public IActionResult Login(UserDto userDto)
     {
         var token = _auth.Authenticate(userDto);
@@ -45,5 +45,23 @@ public class UserController : Controller
             return Unauthorized();
 
         return Ok(new { Token = token });
+    }
+
+    [HttpPost("UpdateCompetences")]
+    public async Task<IActionResult> UpdateCompetences([FromBody] UpdateCompetencesDto dto)
+    {
+        var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+        if (email == null)
+        {
+            return Unauthorized();
+        }
+
+        var result =await _auth.UpdateCompetences(email, dto.Competences);
+        if (!result)
+        {
+            return NotFound(new { message = "User not found" });
+        }
+
+        return Ok(new { message = "Competences updated successfully" });
     }
 }

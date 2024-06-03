@@ -64,4 +64,17 @@ public class AuthService : IAuthService
         _context.SaveChanges();
         return true;
     }
+    
+    public async Task<bool> UpdateCompetences(string email, string newCompetences)
+    {
+        var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
+        if (user == null)
+        {
+            return false;
+        }
+
+        user.Competencies = newCompetences;
+        await _context.SaveChangesAsync();
+        return true;
+    }
 }
