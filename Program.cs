@@ -1,9 +1,11 @@
+using System.Text;
 using hh.Bll;
 using hh.Controllers;
 using hh.Dal;
-using hh.Domain.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,10 +18,28 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient<VacanciesController>();
 builder.Services.AddDbContext<ApiDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddIdentity<User, IdentityRole>()
-    .AddEntityFrameworkStores<ApiDbContext>()
-    .AddDefaultTokenProviders();
 builder.Services.AddScoped<IVacancyService, VacancyService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
+
+
 
 builder.Services.Configure<IdentityOptions>(options =>
 {

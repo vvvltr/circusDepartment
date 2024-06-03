@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Web;
 using hh.Bll;
 using hh.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -12,6 +13,7 @@ namespace hh.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
+    [Authorize]
     public class VacanciesController : ControllerBase
     {
         private readonly HttpClient _httpClient;
