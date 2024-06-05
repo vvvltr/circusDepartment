@@ -14,7 +14,7 @@ using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegiste
 namespace hh.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("[controller]/[action]")]
 public class UserController : Controller
 {
     private readonly IAuthService _auth;
@@ -27,7 +27,7 @@ public class UserController : Controller
         _configuration = configuration ?? throw new ArgumentException(nameof(_configuration));
     }
 
-    [HttpPost("Register")]
+    [HttpPost]
     public async Task<IActionResult> Register(UserDto userDto)
     {
         if (await _auth.Register(userDto))
@@ -37,7 +37,7 @@ public class UserController : Controller
         return Conflict(new { message = "User already exists" });
     }
 
-    [HttpPost("Login")]
+    [HttpPost]
     public IActionResult Login(UserDto userDto)
     {
         var token = _auth.Authenticate(userDto);
@@ -47,7 +47,7 @@ public class UserController : Controller
         return Ok(new { Token = token });
     }
 
-    [HttpPost("UpdateCompetences")]
+    [HttpPost]
     public async Task<IActionResult> UpdateCompetences([FromBody] UpdateCompetencesDto dto)
     {
         var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;

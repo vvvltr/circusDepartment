@@ -29,30 +29,28 @@ namespace hh.Controllers
             _service = vacancyService;
         }
 
+        /// <summary>
+        /// Возвращает список вакансий + данные о соответствии навыков
+        /// </summary>
+        /// <param name="queryParams"></param>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<VacanciesListResponseDto> GetVacancies([FromQuery] Dictionary<string, string> queryParams)
+        public async Task<VacanciesSkillsResponseDto> GetSkillCheck([FromQuery] Dictionary<string, string> queryParams)
         {
-            return await _service.GetVacanciesAsync(queryParams);
+            var skillcheckDto = await _service.GetSkillcheck(queryParams);
+            return await _service.GetVacanciesSkillsList(skillcheckDto);
         }
 
+        /// <summary>
+        /// Возвращает список вакансий со всеми параметрами
+        /// </summary>
+        /// <param name="queryParams"></param>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<List<VacancyResponseDto>> GetVacanciesDescriprions([FromQuery] Dictionary<string, string> queryParams)
+        public async Task<List<VacanciesInfoResponseDto>> GetList([FromQuery] Dictionary<string, string> queryParams)
         {
-            var resp = await _service.GetVacanciesAsync(queryParams);
-            return await _service.GetVacanciesDescription(resp);
+            return await _service.GetInfoAsync(queryParams);
         }
-
-        private UriBuilder ParseQuery(Dictionary<string, string> queryParams)
-        {
-            var uriBuilder = new UriBuilder(_baseUri);
-            var query = HttpUtility.ParseQueryString(uriBuilder.Query);
-            foreach (var param in queryParams)
-            {
-                query[param.Key] = param.Value;
-            }
-
-            uriBuilder.Query = query.ToString();
-            return uriBuilder;
-        }
+        
     }
 }

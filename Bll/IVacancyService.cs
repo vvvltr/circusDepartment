@@ -5,7 +5,11 @@ namespace hh.Bll;
 
 public interface IVacancyService
 {
-    Task<VacanciesListResponseDto> GetVacanciesAsync(Dictionary<string, string> queryParams);
+    Task<VacanciesIdsResponseDto> GetListAsync(Dictionary<string, string> queryParams);
 
-    Task<List<VacancyResponseDto>> GetVacanciesDescription(VacanciesListResponseDto vacancies);
+    Task<List<VacanciesInfoResponseDto>> GetInfoAsync(Dictionary<string, string> vacancies);
+
+    Task<VacanciesSkillsResponseDto> GetVacanciesSkillsList(SkillCheckResponseDto skillCheckResponseDto);
+
+    Task<SkillCheckResponseDto?> GetSkillcheck(Dictionary<string, string> queryParams);
 }
