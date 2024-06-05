@@ -6,5 +6,6 @@ public interface IAuthService
 {
     public string Authenticate(UserDto userDto);
     public Task<bool> Register(UserDto userDto);
+    public Task<string> GetCompetences(string email);
     public Task<bool> UpdateCompetences(string email, string newCompetences);
 }

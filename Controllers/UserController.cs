@@ -47,6 +47,12 @@ public class UserController : Controller
         return Ok(new { Token = token });
     }
 
+    [HttpGet]
+    public async Task<string> GetCompetences()
+    {
+        var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+        return await _auth.GetCompetences(email);
+    }
     [HttpPost]
     public async Task<IActionResult> UpdateCompetences([FromBody] UpdateCompetencesDto dto)
     {
