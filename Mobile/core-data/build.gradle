@@ -1,0 +1,33 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+}
+
+android {
+    buildTypes {
+        debug {
+            buildConfigField "String", "BASE_URL", "\"http://164.92.162.137:5026/\""
+        }
+        release {
+            buildConfigField "String", "BASE_URL", "\"http://164.92.162.137:5026/\""
+        }
+    }
+    namespace 'com.kaleksandra.coredata'
+}
+
+dependencies {
+    implementation(core)
+    implementation(composeRuntime)
+
+    implementation(retrofit)
+    implementation(retrofitConverter)
+    implementation(okHttp)
+    implementation(loggingInterceptor)
+
+    implementation(hiltDep)
+    kapt(hiltKapt)
+
+    implementation(serialization)
+    implementation(dataStore)
+}
