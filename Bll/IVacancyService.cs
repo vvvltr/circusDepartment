@@ -7,7 +7,8 @@ public interface IVacancyService
 {
     Task<VacanciesIdsResponseDto> GetListAsync(Dictionary<string, string> queryParams);
 
-    Task<List<VacanciesInfoResponseDto>> GetInfoAsync(Dictionary<string, string> vacancies);
+    Task<List<VacanciesInfoResponseDto>> GetInfoListAsync(Dictionary<string, string> vacancies);
+    Task<VacanciesInfoResponseDto> GetInfoAsync(int id);
 
     Task<VacanciesSkillsResponseDto> GetVacanciesSkillsList(SkillCheckResponseDto skillCheckResponseDto);
 

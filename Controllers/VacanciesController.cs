@@ -49,8 +49,13 @@ namespace hh.Controllers
         [HttpGet]
         public async Task<List<VacanciesInfoResponseDto>> GetList([FromQuery] Dictionary<string, string> queryParams)
         {
-            return await _service.GetInfoAsync(queryParams);
+            return await _service.GetInfoListAsync(queryParams);
         }
-        
+
+        [HttpGet]
+        public async Task<VacanciesInfoResponseDto> GetOne(int id)
+        {
+            return await _service.GetInfoAsync(id);
+        }
     }
 }

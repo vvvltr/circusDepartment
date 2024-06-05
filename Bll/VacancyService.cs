@@ -49,7 +49,7 @@ public class VacancyService : IVacancyService
         return vac;
     }
     
-    public async Task<List<VacanciesInfoResponseDto>> GetInfoAsync(Dictionary<string, string> queryParams)
+    public async Task<List<VacanciesInfoResponseDto>> GetInfoListAsync(Dictionary<string, string> queryParams)
     {
         // получить ответ с хх.ру
         var apiResponse = await GetListFromHeadHunter(queryParams);
@@ -79,6 +79,13 @@ public class VacancyService : IVacancyService
         }
 
         return list;
+    }
+
+    public async Task<VacanciesInfoResponseDto> GetInfoAsync(int id)
+    {
+        var req = await GetInfoFromHeadHunter(id);
+        var res = await req.Content.ReadFromJsonAsync<VacanciesInfoResponseDto>();
+        return res;
     }
 
     public async Task<SkillCheckResponseDto?> GetSkillcheck(Dictionary<string, string> queryParams)
