@@ -118,7 +118,8 @@ public class VacancyService : IVacancyService
             _logger.LogError(e, "error sending data to python api");
             throw new ArgumentException(nameof(e));
         }
-        
+
+        var str = await response.Content.ReadAsStringAsync();
         return await response.Content.ReadFromJsonAsync<SkillCheckResponseDto>();
     }
 
@@ -127,7 +128,7 @@ public class VacancyService : IVacancyService
         VacanciesSkillsResponseDto vacanciesSkillsDto = new VacanciesSkillsResponseDto();
         vacanciesSkillsDto.Items = new List<VacanciesSkillsResponseDto.Item>();
         vacanciesSkillsDto.Skills = new List<string>();
-        vacanciesSkillsDto.Skills = skillcheck.Skills;
+        vacanciesSkillsDto.Skills = skillcheck.skills;
         foreach (var vacancy in skillcheck.Items)
         {
             var responseMessage = await GetInfoFromHeadHunter(vacancy.Id);
@@ -136,7 +137,8 @@ public class VacancyService : IVacancyService
             {
                 Id = vacancy.Id,
                 Description = vacancyInfo.Description,
-                Name = vacancyInfo.Name
+                Name = vacancyInfo.Name,
+                Skills = vacancy.skills
             });
         }
 

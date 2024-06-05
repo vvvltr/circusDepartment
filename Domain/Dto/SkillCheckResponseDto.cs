@@ -6,8 +6,8 @@ public class SkillCheckResponseDto
     public class Item
     {
         public int Id { get; set; }
-        public string Skills { get; set; }
+        public List<string> skills { get; set; }
     }
     
-    public List<string> Skills { get; set; }
+    public List<string> skills { get; set; }
 }
